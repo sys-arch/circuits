@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,7 +34,7 @@ public class CircuitsController {
     }
 
     @PostMapping("/generateCode")
-    public String generateCode(@RequestBody Circuit circuit) {
+    public String generateCode(@RequestBody Circuit circuit, @RequestParam String name) {
         /*if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener los campos qubits y outputQubits");
         }
