@@ -4,17 +4,20 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 
 @Entity
 public class Circuit {
-    @Id @GeneratedValue
-    private UUID id;
+    @Id
+    @Column(length=36)
+    private String id = UUID.randomUUID().toString();
 
     @Transient
     private int[][] table;
+
+    @Column
+    private String name;
 
     @Column
     private int outputQubits;
@@ -26,12 +29,12 @@ public class Circuit {
 
     public Circuit() {
     }
-
-    public UUID getId() {
+    
+    public String getId() {
         return id;
     }
 
-    public void setUUID(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,6 +52,14 @@ public class Circuit {
 
     public void setOutputQubits(int outputQubits) {
         this.outputQubits = outputQubits;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String generateCode() {

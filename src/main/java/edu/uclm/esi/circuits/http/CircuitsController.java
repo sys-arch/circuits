@@ -23,24 +23,24 @@ public class CircuitsController {
 
     @PostMapping("/createCircuit")
     public String createCircuit(@RequestBody Map<String, Object> body) {
-        if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener los campos qubits y outputQubits");
+        if (!body.containsKey("table") || !body.containsKey("outputQubits") || !body.containsKey("qubits")) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener los campos table, qubits y outputQubits");
         }
-        /*if (qubits < 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The number of qubits must be greater than 0");
-        }*/
+
+        int qubits = (int) body.get("qubits");
+        if (qubits < 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El numero de qubits debe ser mayor que 0");
+        }
         
         return this.service.createCircuit(body);
     }
 
     @PostMapping("/generateCode")
-    public String generateCode(@RequestBody Circuit circuit, @RequestParam String name) {
-        /*if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener los campos qubits y outputQubits");
-        }
-        /*if (qubits < 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The number of qubits must be greater than 0");
-        }*/
+    public String generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
+
+       if(name != null) {
+           circuit.setName(name);
+       }
         
         return this.service.generateCode(circuit);
     }
