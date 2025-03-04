@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.circuits.model.Circuit;
 import edu.uclm.esi.circuits.services.CircuitService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/circuits")
 public class CircuitsController {
@@ -36,7 +38,7 @@ public class CircuitsController {
     }
 
     @PostMapping("/generateCode")
-    public String generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
+    public Map<String,Object> generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
 
        if(name != null) {
            circuit.setName(name);

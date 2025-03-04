@@ -21,9 +21,11 @@ public class CircuitService {
         return "Hola";
     }
 
-    public String generateCode(Circuit circuit) {
+    public Map<String,Object> generateCode(Circuit circuit) {
         String code = circuit.generateCode();
-        return code;
+        Map<String,Object> result = new HashMap<>(); 
+        
+        return result;
         /*
         Con dos de entrada y uno de salida
         Si es 0,0 y salida 1 entonces generas codigo
