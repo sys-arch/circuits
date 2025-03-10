@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.circuits.model.Circuit;
 import edu.uclm.esi.circuits.services.CircuitService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -38,12 +39,17 @@ public class CircuitsController {
     }
 
     @PostMapping("/generateCode")
-    public Map<String,Object> generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
+    public Map<String,Object> generateCode(HttpServletRequest request, @RequestParam(required=false) String name, @RequestBody Circuit circuit) {
 
        if(name != null) {
            circuit.setName(name);
        }
-        
+
+       String token = request.getHeader("Authorization");
+       if(token == null) {
+           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No se ha proporcionado un token de autenticación");
+       }
+       
         return this.service.generateCode(circuit);
     }
 }
