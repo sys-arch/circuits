@@ -6,7 +6,6 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 public class ProxyBEUsuarios {
 
@@ -19,12 +18,12 @@ public class ProxyBEUsuarios {
 
     public void checkToken(String token) throws IOException {
 
-        HttpGet httpGet = new HttpGet(url + "checkToken?token=" + token);
+        HttpGet httpGet = new HttpGet(url + "validarToken?token=" + token);
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
                 int code = response.getCode();
                 if (code != 200)
-                    throw new Exception("El servicio solicitado requiere pago3");
+                    throw new Exception("El servicio solicitado requiere pago");
             }
         } catch (Exception e) {
         }
