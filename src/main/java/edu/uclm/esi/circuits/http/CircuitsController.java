@@ -49,7 +49,11 @@ public class CircuitsController {
        if(token == null) {
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No se ha proporcionado un token de autenticación");
        }
-       
+       try {
         return this.service.generateCode(circuit);
+       } catch (Exception e) {
+           throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "Paga!");
+       }
+    
     }
 }
