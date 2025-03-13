@@ -1,7 +1,5 @@
 package edu.uclm.esi.circuits.services;
 
-import java.io.IOException;
-
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -13,22 +11,25 @@ public class ProxyBEUsuarios {
     private final String url = "http://localhost:8081/tokens/";
 
     //Constructor privado
-    private ProxyBEUsuarios() {
-    }
+    private ProxyBEUsuarios() {}
 
-    public void checkToken(String token) throws IOException {
-
-        HttpGet httpGet = new HttpGet(url + "validarToken?token=" + token);
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            try (CloseableHttpResponse response = httpclient.execute(httpGet)) {
-                int code = response.getCode();
-                if (code != 200)
-                    throw new Exception("El servicio solicitado requiere pago");
+    public void checkToken(String token) throws Exception {
+        HttpGet httpGet = new HttpGet(url + "validarToken");
+        httpGet.setHeader("Authorization", "Bearer " + token); // Agregar la cabecera Authorization
+    
+        try (CloseableHttpClient httpclient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpclient.execute(httpGet)) {
+    
+            int code = response.getCode();
+            if (code != 200) {
+                throw new Exception("El servicio solicitado requiere pago");
             }
+    
         } catch (Exception e) {
+            throw new Exception("No se ha podido validar el token");
         }
     }
-
+    
     //Metodo publico que devuelve una instancia de la clase
     public static ProxyBEUsuarios get() {
         if (yo == null)
