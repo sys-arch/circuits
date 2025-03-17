@@ -21,7 +21,8 @@ public class CircuitService {
         return "Hola";
     }
 
-    public Map<String,Object> generateCode(Circuit circuit) {
+    public Map<String,Object> generateCode(Circuit circuit, String token) {
+
         String code = circuit.generateCode();
         Map<String,Object> result = new HashMap<>(); 
         
