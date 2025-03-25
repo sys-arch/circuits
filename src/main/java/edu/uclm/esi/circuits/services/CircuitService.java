@@ -1,5 +1,6 @@
 package edu.uclm.esi.circuits.services;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +22,11 @@ public class CircuitService {
         return "Hola";
     }
 
-    public Map<String,Object> generateCode(Circuit circuit, String token) {
+    public Map<String,Object> generateCode(Circuit circuit, String token) throws Exception {
 
-        String code = circuit.generateCode();
+        String templateCode = this.readFile("ibm.local.txt")
+        
+        String code = circuit.generateCode(templateCode);
         Map<String,Object> result = new HashMap<>(); 
         
         return result;
@@ -34,5 +37,10 @@ public class CircuitService {
         y se deshace los cambios
 
         */
+    }
+
+    private String readFile(String fileName) throws Exception {
+        Path path = Paths.get(fileName);
+        return new String(Files.readAllBytes(path));
     }
 }

@@ -62,7 +62,9 @@ public class Circuit {
         this.name = name;
     }
 
-    public String generateCode() {
+    public String generateCode(String template) {
+        template = template.replace("#QUBITS#", "" + this.table[0].length);
+        template = template.replace("#OUTPUT QUBITS#", "" + this.outputQubits);
         return "Hola";
     }
 }
