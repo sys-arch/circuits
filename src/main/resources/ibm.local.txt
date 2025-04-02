@@ -1,8 +1,9 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute
 from qiskit import Aer
 
-qreg = QuantumRegister(5, 'q')      # SUSTITUYE EL 5 POR EL NÚMERO DE CÚBITS DEL CIRCUITO
-creg = ClassicalRegister(2, 'c')    # SUSTITUYE EL 1 POR EL NÚMERO DE BITS DE SALIDA
+qreg = QuantumRegister(#QUBITS#, 'q')
+creg = ClassicalRegister(#OUTPUT_QUBITS#, 'c')
+
 circuit = QuantumCircuit(qreg, creg)
 ONE = [0, 1]
 ZERO = [1, 0]

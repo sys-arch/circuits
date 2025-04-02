@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.circuits.model.Circuit;
 import edu.uclm.esi.circuits.services.CircuitService;
-import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -23,7 +23,7 @@ public class CircuitsController {
 
     @Autowired
     private CircuitService service;
-
+/* 
     @PostMapping("/createCircuit")
     public String createCircuit(@RequestBody Map<String, Object> body) {
         if (!body.containsKey("table") || !body.containsKey("outputQubits") || !body.containsKey("qubits")) {
@@ -55,6 +55,22 @@ public class CircuitsController {
        } catch (Exception e) {
            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "No hay suficientes creditos para generar el circuito");
        }
+
     
     }
+       */
+    @PostMapping("/generate")
+    public Map<String, Object> generate(
+            @RequestBody Circuit circuit,
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "credits", required = false, defaultValue = "false") boolean credits) {
+
+        try {
+            return this.service.generateCode(circuit, token, credits);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, e.getMessage());
+        }
+    }
+
+    
 }
