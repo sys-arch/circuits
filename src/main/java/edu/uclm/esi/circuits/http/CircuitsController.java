@@ -23,16 +23,25 @@ public class CircuitsController {
 
     @Autowired
     private CircuitService service;
+<<<<<<< Updated upstream
 
+=======
+ 
+>>>>>>> Stashed changes
     @PostMapping("/createCircuit")
-    public String createCircuit(@RequestBody Map<String, Object> body) {
-        if (!body.containsKey("table") || !body.containsKey("outputQubits") || !body.containsKey("qubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener los campos table, qubits y outputQubits");
+    public Circuit createCircuit(@RequestBody Map<String, Object> body, @RequestHeader("Authorization") String token) {
+        if (token == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No se ha proporcionado un token de autenticación");
+        } else {
+            try {
+                this.service.checkToken(token);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No se ha podido validar el token de autenticación");
+            }
         }
 
-        int qubits = (int) body.get("qubits");
-        if (qubits < 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El numero de qubits debe ser mayor que 0");
+        if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "La petición debe contener todos los campos necesarios");
         }
         
         return this.service.createCircuit(body);
@@ -52,9 +61,19 @@ public class CircuitsController {
 
        try {
         return this.service.generateCode(circuit, token);
+<<<<<<< Updated upstream
        } catch (Exception e) {
            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "No hay suficientes creditos para generar el circuito");
        }
     
     }
+=======
+    } catch (Exception e) {
+        throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "Son necesarios créditos para generar el código del circuito");
+    }
+
+    
+    }
+    
+>>>>>>> Stashed changes
 }

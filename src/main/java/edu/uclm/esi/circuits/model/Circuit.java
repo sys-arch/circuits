@@ -17,6 +17,9 @@ public class Circuit {
     private int[][] table;
 
     @Column
+    private int qubits;
+
+    @Column
     private String name;
 
     @Column
@@ -25,6 +28,7 @@ public class Circuit {
     public Circuit(int[][] table, int outputQubits) {
         this.table = table;
         this.outputQubits = outputQubits;
+        this.qubits = table.get(0).size();
     }
 
     public Circuit() {
@@ -42,8 +46,17 @@ public class Circuit {
         return table;
     }
 
+<<<<<<< Updated upstream
     public void setTable(int[][] table) {
         this.table = table;
+=======
+    public int getQubits() {
+        return qubits;
+    }
+
+    public void setQubits(int qubits) {
+        this.qubits = qubits;
+>>>>>>> Stashed changes
     }
 
     public int getOutputQubits() {
