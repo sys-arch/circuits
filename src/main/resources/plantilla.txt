@@ -1,0 +1,41 @@
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit_aer import AerSimulator
+import json
+
+# Crear registros y circuito
+qreg = QuantumRegister(6, 'q')
+creg = ClassicalRegister(3, 'c')
+circuit = QuantumCircuit(qreg, creg)
+
+# Lógica del circuito
+circuit.x(qreg[0])
+circuit.x(qreg[1])
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[5])
+circuit.x(qreg[0])
+circuit.x(qreg[1])
+
+circuit.x(qreg[0])
+circuit.x(qreg[2])
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[4])
+circuit.x(qreg[0])
+circuit.x(qreg[2])
+
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[3])
+
+# Medición
+circuit.measure(qreg[3], creg[0])
+circuit.measure(qreg[4], creg[1])
+circuit.measure(qreg[5], creg[2])
+
+# Simulador y ejecución
+simulator = AerSimulator()
+job = simulator.run(circuit, shots=1000)
+result = job.result()
+
+# Obtener counts desde el circuito
+counts = result.get_counts(circuit)
+print(counts)
+
+# Guardar como JSON
+with open("resultados.json", "w") as f:
+    json.dump(counts, f, indent=4)
