@@ -1,21 +1,30 @@
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute
-from qiskit import Aer
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit_aer import AerSimulator
+import json
 
+# Crear registros y circuito
 qreg = QuantumRegister(#QUBITS#, 'q')
 creg = ClassicalRegister(#OUTPUT_QUBITS#, 'c')
-
 circuit = QuantumCircuit(qreg, creg)
-ONE = [0, 1]
-ZERO = [1, 0]
 
+# Inicialización (si es necesaria)
 #INITIALIZE#
 
+# Lógica del circuito generada automáticamente
 #CIRCUIT#
 
+# Medición automática de los qubits de salida
 #MEASURES#
 
-backend = Aer.get_backend('statevector_simulator')
-job = backend.run(circuit, shots=100) 
+# Simulador y ejecución
+simulator = AerSimulator()
+job = simulator.run(circuit, shots=1000)
 result = job.result()
-histogram = result.get_counts()
-print(histogram)
+
+# Obtener resultados
+counts = result.get_counts(circuit)
+print(counts)
+
+# Guardar resultados en JSON
+with open("resultados.json", "w") as f:
+    json.dump(counts, f, indent=4)

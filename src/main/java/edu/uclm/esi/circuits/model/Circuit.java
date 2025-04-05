@@ -84,7 +84,7 @@ public class Circuit {
         for (int[] row : matrix) {
             boolean isActive = false;
     
-            // Ver si hay algún 1 en los bits de salida
+            // Verifica si hay algún 1 en los bits de salida
             for (int j = inputQubits; j < totalQubits; j++) {
                 if (row[j] == 1) {
                     isActive = true;
@@ -94,41 +94,55 @@ public class Circuit {
     
             if (!isActive) continue;
     
-            // Aplicar X a entradas con 0
+            // Aplicar X a entradas con valor 0
             for (int j = 0; j < inputQubits; j++) {
                 if (row[j] == 0)
-                    circuitCode.append("circuit.x(q[").append(j).append("])\n");
+                    circuitCode.append("circuit.x(qreg[").append(j).append("])\n");
             }
     
-            // Aplicar MCX para cada bit de salida en 1
+            // Crear lista de controles
             StringBuilder controls = new StringBuilder();
             for (int j = 0; j < inputQubits; j++) {
-                controls.append("q[").append(j).append("], ");
+                if (j > 0) controls.append(", ");
+                controls.append("qreg[").append(j).append("]");
             }
     
+            // Añadir puertas MCX para cada qubit de salida en 1
             for (int j = inputQubits; j < totalQubits; j++) {
                 if (row[j] == 1) {
-                    circuitCode.append("circuit.mcx([").append(controls.toString()).append("], q[").append(j).append("])\n");
+                    circuitCode.append("circuit.mcx([")
+                        .append(controls)
+                        .append("], qreg[").append(j).append("])\n");
                 }
             }
     
-            // Deshacer las X
+            // Deshacer X
             for (int j = 0; j < inputQubits; j++) {
                 if (row[j] == 0)
-                    circuitCode.append("circuit.x(q[").append(j).append("])\n");
+                    circuitCode.append("circuit.x(qreg[").append(j).append("])\n");
             }
     
             circuitCode.append("\n");
         }
     
+        // Sección de medidas
+        StringBuilder measures = new StringBuilder();
+        for (int i = 0; i < outputQubits; i++) {
+            int qubitIndex = inputQubits + i;
+            measures.append("circuit.measure(qreg[").append(qubitIndex)
+                    .append("], creg[").append(i).append("])\n");
+        }
+    
+        // Sustitución en la plantilla
         template = template.replace("#QUBITS#", String.valueOf(totalQubits));
         template = template.replace("#OUTPUT_QUBITS#", String.valueOf(outputQubits));
         template = template.replace("#CIRCUIT#", circuitCode.toString());
-        template = template.replace("#INITIALIZE#", "");
-        template = template.replace("#MEASURES#", "");
+        template = template.replace("#INITIALIZE#", ""); // opcional para futuro
+        template = template.replace("#MEASURES#", measures.toString());
     
         return template;
     }
+    
     
     
 }

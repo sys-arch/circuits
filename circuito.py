@@ -1,35 +1,39 @@
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute
-from qiskit import Aer
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit_aer import AerSimulator
+import json
 
+# Crear registros y circuito
 qreg = QuantumRegister(6, 'q')
 creg = ClassicalRegister(3, 'c')
-
 circuit = QuantumCircuit(qreg, creg)
-ONE = [0, 1]
-ZERO = [1, 0]
+
+# Inicialización (si es necesaria)
+
+
+# Lógica del circuito generada automáticamente
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[3])
+
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[4])
+
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[5])
 
 
 
-circuit.x(q[0])
-circuit.x(q[1])
-circuit.mcx([q[0], q[1], q[2], ], q[5])
-circuit.x(q[0])
-circuit.x(q[1])
-
-circuit.x(q[0])
-circuit.x(q[2])
-circuit.mcx([q[0], q[1], q[2], ], q[4])
-circuit.x(q[0])
-circuit.x(q[2])
-
-circuit.mcx([q[0], q[1], q[2], ], q[3])
+# Medición automática de los qubits de salida
+circuit.measure(qreg[3], creg[0])
+circuit.measure(qreg[4], creg[1])
+circuit.measure(qreg[5], creg[2])
 
 
-
-
-
-backend = Aer.get_backend('statevector_simulator')
-job = backend.run(circuit, shots=100)
+# Simulador y ejecución
+simulator = AerSimulator()
+job = simulator.run(circuit, shots=1000)
 result = job.result()
-histogram = result.get_counts()
-print(histogram)
+
+# Obtener resultados
+counts = result.get_counts(circuit)
+print(counts)
+
+# Guardar resultados en JSON
+with open("resultados.json", "w") as f:
+    json.dump(counts, f, indent=4)
