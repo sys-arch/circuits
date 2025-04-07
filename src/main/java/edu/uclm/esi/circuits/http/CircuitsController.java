@@ -71,6 +71,11 @@ public class CircuitsController {
             throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, e.getMessage());
         }
     }
+    
+    @PostMapping("/savecode")
+    public void saveCode(@RequestBody Circuit circuit) {
+        service.saveCode(circuit); 
+    }
 
     
 }

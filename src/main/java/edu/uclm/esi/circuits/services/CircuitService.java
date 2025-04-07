@@ -74,7 +74,11 @@ public class CircuitService {
     
         return result;
     }
+
     
+    public Circuit saveCode(Circuit circuit) {
+        return circuitDAO.save(circuit);
+    }
     
     
 }
