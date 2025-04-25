@@ -38,4 +38,21 @@ public class ProxyBEUsuarios {
         return yo;
     }
     
+    public String getUserId(String token) throws Exception {
+        HttpGet httpGet = new HttpGet(url + "getUserId");
+        httpGet.setHeader("Authorization", "Bearer " + token);
+
+        try (CloseableHttpClient httpclient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpclient.execute(httpGet)) {
+
+            int code = response.getCode();
+            if (code != 200) {
+                throw new Exception("No autorizado");
+            }
+
+            return new String(response.getEntity().getContent().readAllBytes());
+        }
+    }
+
+    
 }
