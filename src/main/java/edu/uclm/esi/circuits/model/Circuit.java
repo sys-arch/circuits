@@ -26,6 +26,9 @@ public class Circuit {
 
     @Column(length = 10000) // o usa @Lob si el código es largo
     private String code;
+    
+    @Column
+    private String userId;
 
 
     public Circuit(List<List<Integer>> table, int outputQubits) {
@@ -75,6 +78,14 @@ public class Circuit {
 
     public void setCode(String code) {
         this.code = code;
+    }
+    
+    public String getUserId() {
+    	return userId;
+    }
+    
+    public void setUserId(String userId) {
+    	this.userId = userId;
     }
     
     public int[][] getTableAsArray() {

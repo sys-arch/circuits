@@ -80,5 +80,11 @@ public class CircuitService {
         return circuitDAO.save(circuit);
     }
     
+    public List<Circuit> getMyCircuits(String token) throws Exception {
+        ProxyBEUsuarios proxy = ProxyBEUsuarios.get();
+        String userId = proxy.getUserId(token);
+        return circuitDAO.findByUserId(userId);
+    }
+    
     
 }
