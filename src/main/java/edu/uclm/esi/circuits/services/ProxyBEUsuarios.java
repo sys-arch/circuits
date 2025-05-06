@@ -1,5 +1,7 @@
 package edu.uclm.esi.circuits.services;
 
+import java.util.UUID;
+
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -13,9 +15,17 @@ public class ProxyBEUsuarios {
     //Constructor privado
     private ProxyBEUsuarios() {}
 
+    //Metodo publico que devuelve una instancia de la clase
+    public static ProxyBEUsuarios get() {
+        if (yo == null)
+            yo = new ProxyBEUsuarios();
+
+        return yo;
+    }
+
     public void checkToken(String token) throws Exception {
         HttpGet httpGet = new HttpGet(url + "validarToken");
-        httpGet.setHeader("Authorization", "Bearer " + token); // Agregar la cabecera Authorization
+        httpGet.setHeader("Authorization", token); // Agregar la cabecera Authorization
     
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet)) {
@@ -29,13 +39,28 @@ public class ProxyBEUsuarios {
             throw new Exception("No se ha podido validar el token");
         }
     }
-    
-    //Metodo publico que devuelve una instancia de la clase
-    public static ProxyBEUsuarios get() {
-        if (yo == null)
-            yo = new ProxyBEUsuarios();
 
-        return yo;
+    public UUID getUserId(String token) throws Exception {
+        HttpGet httpGet = new HttpGet(url + "getUserId");
+        httpGet.setHeader("Authorization", token); // Agregar la cabecera Authorization
+    
+        try (CloseableHttpClient httpclient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpclient.execute(httpGet)) {
+    
+            int code = response.getCode();
+            if (code != 200) {
+                throw new Exception("Error al obtener el ID de usuario");
+            }
+
+            UUID userId = UUID.fromString(response.getEntity().getContent().toString());
+
+            return userId;
+    
+        } catch (Exception e) {
+            throw new Exception("No se ha podido validar el token");
+        }
     }
+    
+
     
 }
