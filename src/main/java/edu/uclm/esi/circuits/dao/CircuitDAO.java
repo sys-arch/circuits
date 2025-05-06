@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.uclm.esi.circuits.model.Circuit;
 
 public interface CircuitDAO extends JpaRepository<Circuit, String> {
-    List<Circuit> findByUserId(UUID userId);
+	List<Circuit> findByUserEmail(String userEmail);
 }

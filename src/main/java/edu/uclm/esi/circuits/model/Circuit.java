@@ -1,5 +1,6 @@
 package edu.uclm.esi.circuits.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class Circuit {
     private String id = UUID.randomUUID().toString();
 
     @Transient
-    private List<List<Integer>> table;
+    private List<List<Integer>> table = new ArrayList<>();
 
     @Column
     private String name;
@@ -88,6 +89,9 @@ public class Circuit {
     }
     
     public int[][] getTableAsArray() {
+        if (this.table == null)
+            return new int[0][0];
+
         int[][] array = new int[table.size()][];
         for (int i = 0; i < table.size(); i++) {
             List<Integer> row = table.get(i);
@@ -95,6 +99,7 @@ public class Circuit {
         }
         return array;
     }
+
 
     public String generateCode(String template) {
         int[][] matrix = getTableAsArray();

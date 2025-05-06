@@ -81,6 +81,7 @@ public class CircuitsController {
     
     @GetMapping("/my-circuits")
     public List<Circuit> getMyCircuits(@RequestHeader("Authorization") String token) throws Exception {
+    	System.out.println("Token recibido: " + token);
         return service.getMyCircuits(token);
     }
 
