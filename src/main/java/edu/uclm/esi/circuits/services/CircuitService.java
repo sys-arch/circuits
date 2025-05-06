@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,7 +83,7 @@ public class CircuitService {
     
     public List<Circuit> getMyCircuits(String token) throws Exception {
         ProxyBEUsuarios proxy = ProxyBEUsuarios.get();
-        String userId = proxy.getUserId(token);
+        UUID userId = proxy.getUserId(token);
         return circuitDAO.findByUserId(userId);
     }
     
