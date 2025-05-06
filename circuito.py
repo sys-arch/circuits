@@ -3,18 +3,27 @@ from qiskit_aer import AerSimulator
 import json
 
 # Crear registros y circuito
-qreg = QuantumRegister(#QUBITS#, 'q')
-creg = ClassicalRegister(#OUTPUT_QUBITS#, 'c')
+qreg = QuantumRegister(6, 'q')
+creg = ClassicalRegister(3, 'c')
 circuit = QuantumCircuit(qreg, creg)
 
 # Inicialización (si es necesaria)
-#INITIALIZE#
+
 
 # Lógica del circuito generada automáticamente
-#CIRCUIT#
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[3])
+
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[4])
+
+circuit.mcx([qreg[0], qreg[1], qreg[2]], qreg[5])
+
+
 
 # Medición automática de los qubits de salida
-#MEASURES#
+circuit.measure(qreg[3], creg[0])
+circuit.measure(qreg[4], creg[1])
+circuit.measure(qreg[5], creg[2])
+
 
 # Simulador y ejecución
 simulator = AerSimulator()
