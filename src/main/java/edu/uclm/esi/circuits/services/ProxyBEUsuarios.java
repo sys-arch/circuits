@@ -1,6 +1,9 @@
 package edu.uclm.esi.circuits.services;
 
 import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -40,27 +43,26 @@ public class ProxyBEUsuarios {
         }
     }
 
-    public UUID getUserId(String token) throws Exception {
-        HttpGet httpGet = new HttpGet(url + "getUserId");
+    public String getEmail(String token) throws Exception {
+        HttpGet httpGet = new HttpGet(url + "getEmail");
         httpGet.setHeader("Authorization", token); // Agregar la cabecera Authorization
-    
+
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet)) {
-    
+
             int code = response.getCode();
             if (code != 200) {
-                throw new Exception("Error al obtener el ID de usuario");
+                throw new Exception("Error al obtener el email del usuario");
             }
+            
+            String email = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))
+                               .lines()
+                               .collect(Collectors.joining("\n"));
 
-            UUID userId = UUID.fromString(response.getEntity().getContent().toString());
+            return email;
 
-            return userId;
-    
         } catch (Exception e) {
             throw new Exception("No se ha podido validar el token");
         }
-    }
-    
-
-    
+    } 
 }

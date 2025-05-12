@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,10 @@ public class CircuitService {
     
     public Circuit saveCode(Circuit circuit) {
         return circuitDAO.save(circuit);
+    }
+    
+    public List<Circuit> getMyCircuits(String token) throws Exception {
+        return circuitDAO.findByUserEmail(token);
     }
     
     
