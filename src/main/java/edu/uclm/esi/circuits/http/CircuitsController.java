@@ -18,7 +18,14 @@ import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.circuits.model.Circuit;
 import edu.uclm.esi.circuits.services.CircuitService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+    originPatterns = {
+        "http://localhost:*",
+        "http://*.swey.net",
+        "https://*.swey.net"
+    },
+    allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/circuits")
 public class CircuitsController {
